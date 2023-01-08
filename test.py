@@ -596,22 +596,21 @@ def play_game_1():
     play = True
 
     game = True
-
     clock = pygame.time.Clock()
     # добавление анимации на поле
-    wave_1 = load_image("waves2.jpg")
-    wave_2 = load_image("reversed.jpg")
-    wave1 = pygame.transform.scale(wave_1, (500, 400))
-    wave2 = pygame.transform.scale(wave_2, (600, 500))
-    wave3 = pygame.transform.scale(wave_1, (300, 200))
-    wave4 = pygame.transform.scale(wave_2, (300, 200))
-    wave5 = pygame.transform.scale(wave_1, (400, 300))
-    waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
-    waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
-    waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
-    waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
-    waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
-    waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
+    # wave_1 = load_image("waves2.jpg")
+    # wave_2 = load_image("reversed.jpg")
+    # wave1 = pygame.transform.scale(wave_1, (500, 400))
+    # wave2 = pygame.transform.scale(wave_2, (600, 500))
+    # wave3 = pygame.transform.scale(wave_1, (300, 200))
+    # wave4 = pygame.transform.scale(wave_2, (300, 200))
+    # wave5 = pygame.transform.scale(wave_1, (400, 300))
+    # waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
+    # waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
+    # waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
+    # waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
+    # waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
+    # waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
 
     drawing = False
 
@@ -652,12 +651,15 @@ def play_game_1():
                     board.fill_cell(x, y, '#0A5257')
 
                     drawing = True
+                    fire = load_image("fire.png")
+                    fire1 = pygame.transform.scale(fire, (250, 150))
 
                     print(cells_coll)
                     print(ship_map2[cells_coll[0][0] - 1][cells_coll[0][1] - 1])
                     print(ship_map2)
                     if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1:
                         print('прошел')
+                        fires = AnimatedSprite(fire1, 5, 4, 27 * x + 68, 27 * y + 90)
                         filled_cells_pl1.append(cells_coll)
                         battle = True
                         play_game_1()
@@ -738,20 +740,19 @@ def play_game_2():
     game = True
 
     clock = pygame.time.Clock()
-
-    wave_1 = load_image("waves2.jpg")
-    wave_2 = load_image("reversed.jpg")
-    wave1 = pygame.transform.scale(wave_1, (500, 400))
-    wave2 = pygame.transform.scale(wave_2, (600, 500))
-    wave3 = pygame.transform.scale(wave_1, (300, 200))
-    wave4 = pygame.transform.scale(wave_2, (300, 200))
-    wave5 = pygame.transform.scale(wave_1, (400, 300))
-    waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
-    waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
-    waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
-    waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
-    waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
-    waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
+    # wave_1 = load_image("waves2.jpg")
+    # wave_2 = load_image("reversed.jpg")
+    # wave1 = pygame.transform.scale(wave_1, (500, 400))
+    # wave2 = pygame.transform.scale(wave_2, (600, 500))
+    # wave3 = pygame.transform.scale(wave_1, (300, 200))
+    # wave4 = pygame.transform.scale(wave_2, (300, 200))
+    # wave5 = pygame.transform.scale(wave_1, (400, 300))
+    # waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
+    # waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
+    # waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
+    # waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
+    # waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
+    # waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
 
     drawing = False
 
@@ -793,10 +794,14 @@ def play_game_2():
 
                     drawing = True
 
+                    fire = load_image("fire.png")
+                    fire1 = pygame.transform.scale(fire, (250, 150))
+
                     print(cells_coll)
                     print(cells_coll[0][0])
                     print(cells_coll[0][1])
                     if ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells4:
+                        fires = AnimatedSprite(fire1, 5, 4, 27 * x + 400, 27 * y + 90)
                         print('прошел')
                         filled_cells4.append(cells_coll)
                     elif ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
