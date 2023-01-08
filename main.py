@@ -131,41 +131,37 @@ def load_image(name, colorkey=None):
     return image
 
 
-filled_cells = []   # список заполняемых клеток для первого поля (корабли)
+filled_cells = []  # список заполняемых клеток для первого поля (корабли)
 filled_cells2 = []  # список заполняемых клеток для второго поля  (корабли)
 
-near_cells = []   # промежуточный список для создания конечного new_near_cells
-near_cells2 = []   # # промежуточный список для создания конечного new_near_cells2
+near_cells = []  # промежуточный список для создания конечного new_near_cells
+near_cells2 = []  # # промежуточный список для создания конечного new_near_cells2
 
-
-new_near_cells = []   # список заполняемых клеток для первого поля (клетки вокруг кораблей, которые нельзя заполнять)
-new_near_cells2 = []   # # список заполняемых клеток для второго поля (клетки вокруг кораблей, которые нельзя заполнять)
+new_near_cells = []  # список заполняемых клеток для первого поля (клетки вокруг кораблей, которые нельзя заполнять)
+new_near_cells2 = []  # # список заполняемых клеток для второго поля (клетки вокруг кораблей, которые нельзя заполнять)
 
 ship_map1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            ]                                   # карта с кораблями первого игрока
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             ]  # карта с кораблями первого игрока
 ship_map2 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            ]                                  # карта с кораблями второго игрока
-
-
-
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+             ]  # карта с кораблями второго игрока
 
 
 def start_game_player1():
@@ -174,14 +170,20 @@ def start_game_player1():
     game = True
 
     clock = pygame.time.Clock()
-
-    # wave = load_image("waves2.jpg")
-    # wave = pygame.transform.scale(wave, (500, 400))
-    # waves = AnimatedSprite(wave, 9, 6, 320, 305)
-
-    # wave = load_image("reversed.jpg")
-    # wave1 = pygame.transform.scale(wave, (300, 200))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 180, 203)       попытка добавить анимацию на поле
+    # добавление анимации на поле
+    wave_1 = load_image("waves2.jpg")
+    wave_2 = load_image("reversed.jpg")
+    wave1 = pygame.transform.scale(wave_1, (500, 400))
+    wave2 = pygame.transform.scale(wave_2, (600, 500))
+    wave3 = pygame.transform.scale(wave_1, (300, 200))
+    wave4 = pygame.transform.scale(wave_2, (300, 200))
+    wave5 = pygame.transform.scale(wave_1, (400, 300))
+    waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
+    waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
+    waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
+    waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
+    waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
+    waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
 
     drawing = False
 
@@ -228,7 +230,6 @@ def start_game_player1():
                     if i not in spisok:
                         spisok.append(i)
                 spisok = sorted(spisok)
-
 
                 # проверка: подходят ли выделенные клетки
                 if len(spisok) == 4 and cells4 > 0:
@@ -283,12 +284,12 @@ def start_game_player1():
 
                 drawing = False
 
-
             # если все корабли выставлены, теперь корабли выбирает второй игрок
             if cells1 == 0 and cells2 == 0 and cells3 == 0 and cells4 == 0:
                 new_near_cells = []
+                for i in range(1, 7):
+                    eval(f'all_sprites.remove(waves{i})')
                 start_game_player2()
-
 
         all_sprites.draw(screen)
         all_sprites.update()
@@ -316,6 +317,7 @@ def start_game_player1():
 
         all_sprites.draw(screen)
         all_sprites.update()
+
         clock.tick(6)
         pygame.display.flip()
 
@@ -364,7 +366,6 @@ def start_game_player1():
             ship4 = font3.render(f'1 cell ships: {cells1}', True, ('green'))
             screen.blit(ship4, (80, 460))
 
-
         pygame.display.update()
 
 
@@ -388,13 +389,19 @@ def start_game_player2():
 
     clock = pygame.time.Clock()
 
-    # wave = load_image("waves2.jpg")
-    # wave = pygame.transform.scale(wave, (500, 400))
-    # waves = AnimatedSprite(wave, 9, 6, 320, 305)
-
-    # wave = load_image("reversed.jpg")
-    # wave1 = pygame.transform.scale(wave, (300, 200))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 180, 203)
+    wave_1 = load_image("waves2.jpg")
+    wave_2 = load_image("reversed.jpg")
+    wave1 = pygame.transform.scale(wave_1, (500, 400))
+    wave2 = pygame.transform.scale(wave_2, (600, 500))
+    wave3 = pygame.transform.scale(wave_1, (300, 200))
+    wave4 = pygame.transform.scale(wave_2, (300, 200))
+    wave5 = pygame.transform.scale(wave_1, (400, 300))
+    waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
+    waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
+    waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
+    waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
+    waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
+    waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
 
     drawing = False
 
@@ -496,9 +503,11 @@ def start_game_player2():
 
             if cells1 == 0 and cells2 == 0 and cells3 == 0 and cells4 == 0:
                 new_near_cells = []
+                for i in range(1, 7):
+                    eval(f'all_sprites.remove(waves{i})')
                 print('over')
                 print(ship_map1)
-                print(ship_map2)   # здесь должен быть переход в режим игры
+                print(ship_map2)  # здесь должен быть переход в режим игры
 
         all_sprites.draw(screen)
         all_sprites.update()
@@ -577,7 +586,7 @@ def start_game_player2():
         pygame.display.update()
 
 
-def draw_ship(filled_cells, near_cells, new_near_cells3):   # класс для отрисовки заполненных клеток
+def draw_ship(filled_cells, near_cells, new_near_cells3):  # класс для отрисовки заполненных клеток
     global new_near_cells2
     global new_near_cells
 
@@ -626,7 +635,7 @@ def draw_ship(filled_cells, near_cells, new_near_cells3):   # класс для 
         board2.fill_cell(i[0], i[1], near_color)
 
 
-class Board:   # класс для создания полей
+class Board:  # класс для создания полей
     # создание поля
     def __init__(self, width, height):
         self.width = width
