@@ -577,7 +577,6 @@ def start_game_player2():
         pygame.display.update()
 
 
-
 wrecked_cells = []
 
 battle = False
@@ -585,6 +584,26 @@ battle = False
 filled_cells_pl1 = []
 near_cells_pl1 = []
 new_near_cells_pl1 = []
+
+ships_of_player1 = {
+    '1': 0,
+    '2': 0,
+    '3': 0,
+    '4': 0
+}
+
+ships_of_player2 = {
+    '1': 0,
+    '2': 0,
+    '3': 0,
+    '4': 0
+}
+all_ships2 = []
+
+list_of_ship2 = []
+list_of_ship3 = []
+list_of_ship4 = []
+
 
 def play_game_1():
     player1 = True
@@ -596,22 +615,26 @@ def play_game_1():
     play = True
 
     game = True
-
     clock = pygame.time.Clock()
+
+    for el in filled_cells2:
+        for elem in el:
+            all_ships2.append(elem)
+
     # добавление анимации на поле
-    wave_1 = load_image("waves2.jpg")
-    wave_2 = load_image("reversed.jpg")
-    wave1 = pygame.transform.scale(wave_1, (500, 400))
-    wave2 = pygame.transform.scale(wave_2, (600, 500))
-    wave3 = pygame.transform.scale(wave_1, (300, 200))
-    wave4 = pygame.transform.scale(wave_2, (300, 200))
-    wave5 = pygame.transform.scale(wave_1, (400, 300))
-    waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
-    waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
-    waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
-    waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
-    waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
-    waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
+    # wave_1 = load_image("waves2.jpg")
+    # wave_2 = load_image("reversed.jpg")
+    # wave1 = pygame.transform.scale(wave_1, (500, 400))
+    # wave2 = pygame.transform.scale(wave_2, (600, 500))
+    # wave3 = pygame.transform.scale(wave_1, (300, 200))
+    # wave4 = pygame.transform.scale(wave_2, (300, 200))
+    # wave5 = pygame.transform.scale(wave_1, (400, 300))
+    # waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
+    # waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
+    # waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
+    # waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
+    # waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
+    # waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
 
     drawing = False
 
@@ -652,20 +675,124 @@ def play_game_1():
                     board.fill_cell(x, y, '#0A5257')
 
                     drawing = True
+                    fire = load_image("fire.png")
+                    fire1 = pygame.transform.scale(fire, (250, 150))
 
-                    print(cells_coll)
-                    print(ship_map2[cells_coll[0][0] - 1][cells_coll[0][1] - 1])
-                    print(ship_map2)
+                    # print(cells_coll)
+                    # print(ship_map2[cells_coll[0][0] - 1][cells_coll[0][1] - 1])
+                    # print(ship_map2)
                     if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1:
                         print('прошел')
+                        fires = AnimatedSprite(fire1, 5, 4, 27 * x + 68, 27 * y + 90)
                         filled_cells_pl1.append(cells_coll)
                         battle = True
+                        # print(all_ships2)
+
+                        # проверка кораблей
+                        # однопалубный
+                        if [x + 1, y] not in all_ships2 and [x, y + 1] not in all_ships2 \
+                                and [x - 1, y] not in all_ships2 and [x, y - 1] not in all_ships2:
+                            print('убит корабль из 1')
+                            ships_of_player1['1'] += 1
+
+                        # трехпалубный
+
+                        elif [x + 1, y] in all_ships2 and [x + 2, y] in all_ships2 \
+                                and [x + 3, y] not in all_ships2 and [x - 1, y] not in all_ships2:
+                            if [x + 1, y] in list_of_ship3 and [x + 2, y] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+                        elif [x, y + 1] in all_ships2 and [x, y + 2] in all_ships2 \
+                                and [x, y + 3] not in all_ships2 and [x, y - 1] not in all_ships2:
+                            if [x, y + 1] in list_of_ship3 and [x, y + 2] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+                        elif [x - 1, y] in all_ships2 and [x - 2, y] in all_ships2 \
+                                and [x - 3, y] not in all_ships2 and [x + 1, y] not in all_ships2:
+                            if [x - 1, y] in list_of_ship3 and [x - 2, y] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+                        elif [x, y - 1] in all_ships2 and [x, y - 2] in all_ships2 \
+                                and [x, y - 3] not in all_ships2 and [x, y + 1] not in all_ships2:
+                            if [x, y - 1] in list_of_ship3 and [x, y - 2] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+                        elif [x + 1, y] in all_ships2 and [x - 1, y] in all_ships2 \
+                                and [x + 2, y] not in all_ships2 and [x - 2, y] not in all_ships2:
+                            if [x + 1, y] in list_of_ship3 and [x - 1, y] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+                        elif [x, y + 1] in all_ships2 and [x, y - 1] in all_ships2 \
+                                and [x, y + 2] not in all_ships2 and [x, y - 2] not in all_ships2:
+                            if [x, y + 1] in list_of_ship3 and [x, y - 1] in list_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player1['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list_of_ship3.append([x, y])
+
+                        # двухпалубный
+
+                        elif [x + 1, y] in all_ships2 and [x - 1, y] not in all_ships2 and [x + 2, y] not in all_ships2:
+                            if [x + 1, y] in list_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player1['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list_of_ship2.append([x, y])
+                        elif [x, y + 1] in all_ships2 and [x, y - 1] not in all_ships2 and [x, y + 2] not in all_ships2:
+                            if [x, y + 1] in list_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player1['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list_of_ship2.append([x, y])
+                        elif [x - 1, y] in all_ships2 and [x + 1, y] not in all_ships2 and [x - 2, y] not in all_ships2:
+                            if [x - 1, y] in list_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player1['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list_of_ship2.append([x, y])
+                        elif [x, y - 1] in all_ships2 and [x, y + 1] not in all_ships2 and [x, y - 2] not in all_ships2:
+                            if [x, y - 1] in list_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player1['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list_of_ship2.append([x, y])
+
+                        # четырехпалубный
+
+                        else:
+                            if len(list_of_ship4) == 3:
+                                print('убит корабль из 4')
+                                ships_of_player1['4'] += 1
+                            else:
+                                print('корабль из 4 поражен')
+                                list_of_ship4.append([x, y])
+                        print(ships_of_player1)
+
                         play_game_1()
                     if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
                         new_near_cells_pl1.append(cells_coll)
                         print('не прошел')
                         play_game_2()
-
 
                     # проверка: подходят ли выделенные клетки
 
@@ -720,13 +847,19 @@ def play_game_1():
 
         pygame.display.update()
 
+
+all_ships1 = []
+
+list2_of_ship2 = []
+list2_of_ship3 = []
+list2_of_ship4 = []
+
 filled_cells4 = []
 near_cells4 = []
 new_near_cells4 = []
 
 
 def play_game_2():
-
     player1 = True
 
     new_near_cells = [1]
@@ -737,21 +870,24 @@ def play_game_2():
 
     game = True
 
-    clock = pygame.time.Clock()
+    for el in filled_cells:
+        for elem in el:
+            all_ships1.append(elem)
 
-    wave_1 = load_image("waves2.jpg")
-    wave_2 = load_image("reversed.jpg")
-    wave1 = pygame.transform.scale(wave_1, (500, 400))
-    wave2 = pygame.transform.scale(wave_2, (600, 500))
-    wave3 = pygame.transform.scale(wave_1, (300, 200))
-    wave4 = pygame.transform.scale(wave_2, (300, 200))
-    wave5 = pygame.transform.scale(wave_1, (400, 300))
-    waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
-    waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
-    waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
-    waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
-    waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
-    waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
+    clock = pygame.time.Clock()
+    # wave_1 = load_image("waves2.jpg")
+    # wave_2 = load_image("reversed.jpg")
+    # wave1 = pygame.transform.scale(wave_1, (500, 400))
+    # wave2 = pygame.transform.scale(wave_2, (600, 500))
+    # wave3 = pygame.transform.scale(wave_1, (300, 200))
+    # wave4 = pygame.transform.scale(wave_2, (300, 200))
+    # wave5 = pygame.transform.scale(wave_1, (400, 300))
+    # waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
+    # waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
+    # waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
+    # waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
+    # waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
+    # waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
 
     drawing = False
 
@@ -793,19 +929,124 @@ def play_game_2():
 
                     drawing = True
 
+                    fire = load_image("fire.png")
+                    fire1 = pygame.transform.scale(fire, (250, 150))
+
                     print(cells_coll)
                     print(cells_coll[0][0])
                     print(cells_coll[0][1])
                     if ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells4:
+                        fires = AnimatedSprite(fire1, 5, 4, 27 * x + 400, 27 * y + 90)
                         print('прошел')
                         filled_cells4.append(cells_coll)
+
+                        # проверка кораблей
+                        # однопалубный
+                        if [x + 1, y] not in all_ships1 and [x, y + 1] not in all_ships1 \
+                                and [x - 1, y] not in all_ships1 and [x, y - 1] not in all_ships1:
+                            print('убит корабль из 1')
+                            ships_of_player2['1'] += 1
+
+                        # трехпалубный
+
+                        elif [x + 1, y] in all_ships1 and [x + 2, y] in all_ships1 \
+                                and [x + 3, y] not in all_ships1 and [x - 1, y] not in all_ships1:
+                            if [x + 1, y] in list2_of_ship3 and [x + 2, y] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+                        elif [x, y + 1] in all_ships1 and [x, y + 2] in all_ships1 \
+                                and [x, y + 3] not in all_ships1 and [x, y - 1] not in all_ships1:
+                            if [x, y + 1] in list2_of_ship3 and [x, y + 2] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+                        elif [x - 1, y] in all_ships1 and [x - 2, y] in all_ships1 \
+                                and [x - 3, y] not in all_ships1 and [x + 1, y] not in all_ships1:
+                            if [x - 1, y] in list2_of_ship3 and [x - 2, y] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+                        elif [x, y - 1] in all_ships1 and [x, y - 2] in all_ships1 \
+                                and [x, y - 3] not in all_ships1 and [x, y + 1] not in all_ships1:
+                            if [x, y - 1] in list2_of_ship3 and [x, y - 2] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+                        elif [x + 1, y] in all_ships1 and [x - 1, y] in all_ships1 \
+                                and [x + 2, y] not in all_ships1 and [x - 2, y] not in all_ships1:
+                            if [x + 1, y] in list2_of_ship3 and [x - 1, y] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+                        elif [x, y + 1] in all_ships1 and [x, y - 1] in all_ships1 \
+                                and [x, y + 2] not in all_ships1 and [x, y - 2] not in all_ships1:
+                            if [x, y + 1] in list2_of_ship3 and [x, y - 1] in list2_of_ship3:
+                                print('убит корабль из 3')
+                                ships_of_player2['3'] += 1
+                            else:
+                                print('корабль из 3 поражен')
+                                list2_of_ship3.append([x, y])
+
+                        # двухпалубный
+
+                        elif [x + 1, y] in all_ships1 and [x - 1, y] not in all_ships1 and [x + 2, y] not in all_ships1:
+                            if [x + 1, y] in list2_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player2['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list2_of_ship2.append([x, y])
+                        elif [x, y + 1] in all_ships1 and [x, y - 1] not in all_ships1 and [x, y + 2] not in all_ships1:
+                            if [x, y + 1] in list2_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player2['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list2_of_ship2.append([x, y])
+                        elif [x - 1, y] in all_ships1 and [x + 1, y] not in all_ships1 and [x - 2, y] not in all_ships1:
+                            if [x - 1, y] in list2_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player2['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list2_of_ship2.append([x, y])
+                        elif [x, y - 1] in all_ships1 and [x, y + 1] not in all_ships1 and [x, y - 2] not in all_ships1:
+                            if [x, y - 1] in list2_of_ship2:
+                                print('убит корабль из 2')
+                                ships_of_player2['2'] += 1
+                            else:
+                                print('корабль из 2 поражен')
+                                list2_of_ship2.append([x, y])
+
+                        # четырехпалубный
+
+                        else:
+                            if len(list2_of_ship4) == 3:
+                                print('убит корабль из 4')
+                                ships_of_player2['4'] += 1
+                            else:
+                                print('корабль из 4 поражен')
+                                list2_of_ship4.append([x, y])
+                        print(ships_of_player2)
+
                     elif ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
                         print('не прошел')
                         new_near_cells4.append(cells_coll)
                         play_game_1()
 
                 drawing = False
- # здесь должен быть переход в режим игры
+        # здесь должен быть переход в режим игры
 
         all_sprites.draw(screen)
         all_sprites.update()
@@ -853,14 +1094,13 @@ def play_game_2():
 
         font3 = pygame.font.Font('progresspixel_bold.ttf', 15)
 
-
         pygame.display.update()
 
 
-def draw_ship(filled_cells_none, near_cells_none, new_near_cells_none, play=False, number=1):  # класс для отрисовки заполненных клеток
+def draw_ship(filled_cells_none, near_cells_none, new_near_cells_none, play=False,
+              number=1):  # класс для отрисовки заполненных клеток
     global new_near_cells2
     global new_near_cells
-
 
     if play is False:
         for i in range(len(filled_cells_none)):
