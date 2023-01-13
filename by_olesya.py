@@ -179,8 +179,8 @@ def start_game_player1():
     moving_y = 27
     wave_inp = pygame.transform.scale(wave_1, (230, 130))
     counter = 0
-    for _ in range(11):
-        for _ in range(10):
+    for i in range(11):
+        for j in range(10):
             if counter == 10:
                 moving_x = 27
                 moving_y += 27
@@ -406,14 +406,15 @@ def start_game_player2():
     moving_y = 27
     wave_inp = pygame.transform.scale(wave_2, (230, 130))
     counter = 0
-    for _ in range(11):
-        for _ in range(10):
+    lst_waves = []
+    for i in range(11):
+        for j in range(10):
             if counter == 10:
                 moving_x = 27
                 moving_y += 27
                 counter = 0
             else:
-                waves = AnimatedSprite(wave_inp, 9, 6, 407 + moving_x, 102 + moving_y)
+                lst_waves.append(AnimatedSprite(wave_inp, 9, 6, 407 + moving_x, 102 + moving_y))
                 moving_x += 27
                 counter += 1
     # wave_1 = load_image("waves2.jpg")
