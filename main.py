@@ -1,8 +1,8 @@
 from typing import Tuple
 
-import pygame, sys, os
-import pickle
-from pygame.font import Font
+import os
+import pygame
+import sys
 
 FPS = 50
 pygame.font.init()
@@ -21,14 +21,12 @@ pixel = pygame.font.Font('progresspixel_bold.ttf', 30)
 all_sprites = pygame.sprite.Group()
 
 play = False
+objects = []
 
 
 def terminate():
     pygame.quit()
     sys.exit()
-
-
-objects = []
 
 
 class AnimatedSprite(pygame.sprite.Sprite):  # класс для анимаций
@@ -55,7 +53,8 @@ class AnimatedSprite(pygame.sprite.Sprite):  # класс для анимаци�
 
 
 class Button():  # класс для кнопок
-    def __init__(self, x, y, width, height, buttonText='Button', onclickFunction=None, onePress=False, alreadyPressed=False):
+    def __init__(self, x, y, width, height, buttonText='Button', onclickFunction=None, onePress=False,
+                 alreadyPressed=False):
         self.x = x
         self.y = y
         self.width = width
@@ -79,9 +78,6 @@ class Button():  # класс для кнопок
         objects.append(self)
 
     def process(self):
-
-
-
         mousePos = pygame.mouse.get_pos()
 
         self.buttonSurface.fill(self.fillColors['normal'])
@@ -92,7 +88,6 @@ class Button():  # класс для кнопок
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
                 self.buttonSurface.fill(self.fillColors['pressed'])
                 self.alreadyPressed = False
-
 
                 if not self.alreadyPressed:
                     print('yay')
@@ -110,6 +105,7 @@ class Button():  # класс для кнопок
 
 
 waves_dict = {}
+
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self, moving_x, moving_y):
@@ -131,13 +127,12 @@ class Ship2(pygame.sprite.Sprite):
         all_sprites.remove(waves_dict[(moving_x, moving_y)])
 
 
-
 def start_screen():
     screen.fill((0, 0, 0))
 
-    global new_near_cells, filled_cells, near_cells, ship_map1, filled_cells2, near_cells2, new_near_cells2, ship_map2, \
-        wrecked_cells, battle, filled_cells_pl1, near_cells_pl1, new_near_cells_pl1, ships_of_player1, ships_of_player2, \
-        all_ships2, list_of_ship2, list_of_ship3, list_of_ship4
+    global new_near_cells, filled_cells, near_cells, ship_map1, filled_cells2, near_cells2, new_near_cells2, \
+        ship_map2, wrecked_cells, battle, filled_cells_pl1, near_cells_pl1, new_near_cells_pl1, ships_of_player1, \
+        ships_of_player2, all_ships2, list_of_ship2, list_of_ship3, list_of_ship4
 
     ship_map1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -151,17 +146,11 @@ def start_screen():
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  ]
 
+    filled_cells2 = []  # список заполняемых клеток для второго поля (корабли)
+    near_cells2 = []  # промежуточный список для создания конечного new_near_cells2
+    new_near_cells2 = []  # список заполняемых клеток для второго поля (клетки вокруг кораблей, которые нельзя
+    # заполнять)
 
-
-    filled_cells2 = []  # список заполняемых клеток для второго поля  (корабли)
-
-    # промежуточный список для создания конечного new_near_cells
-    near_cells2 = []  # # промежуточный список для создания конечного new_near_cells2
-
-    # список заполняемых клеток для первого поля (клетки вокруг кораблей, которые нельзя заполнять)
-    new_near_cells2 = []  # # список заполняемых клеток для второго поля (клетки вокруг кораблей, которые нельзя заполнять)
-
-    # карта с кораблями первого игрока
     ship_map2 = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -216,7 +205,7 @@ def start_screen():
         surf1 = pygame.Surface((130, 130))
         surf1.fill(('black'))
         screen.blit(surf1, (x_pos1, 70))
-        customButton = Button(200, 200, 400, 100, 'start', start_game_player1)
+        Button(200, 200, 400, 100, 'start', start_game_player1)
         f2 = pygame.font.Font('progresspixel_bold.ttf', 70)
         textt = f2.render('sea battle', True, (115, 2, 2))
         textt_shadow = f2.render('sea battle', True, (205, 29, 29))
@@ -236,8 +225,6 @@ def start_screen():
             x_pos1 = 800
 
 
-
-
 def load_image(name, colorkey=None):
     fullname = os.path.join(name)
     # если файл не существует, то выходим
@@ -247,8 +234,6 @@ def load_image(name, colorkey=None):
     image = pygame.image.load(fullname)
     image.set_colorkey(('white'))
     return image
-
-clicked = []
 
 
 def start_game_player1():
@@ -273,18 +258,6 @@ def start_game_player1():
             moving_x += 27
         moving_x = 27
         moving_y += 27
-    # wave1 = pygame.transform.scale(wave_1, (500, 400))
-    # wave2 = pygame.transform.scale(wave_2, (600, 500))
-    # wave3 = pygame.transform.scale(wave_1, (250, 150))
-    # wave4 = pygame.transform.scale(wave_2, (300, 200))
-    # wave5 = pygame.transform.scale(wave_1, (400, 300))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
-    # waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
-    # waves3 = AnimatedSprite(wave3, 9, 6, 105, 127)
-    # waves33 = AnimatedSprite(wave3, 9, 6, 105, 127)
-    # waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
-    # waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
-    # waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
 
     drawing = False
 
@@ -322,25 +295,7 @@ def start_game_player1():
                     x, y = board.get_click(event.pos)
                     cells_coll.append([x, y])
                     board.fill_cell(x, y, '#0A5257')
-                    boat1 = Ship(x, y)
-
-                    # boat = load_image('ship_one.jpg')
-                    # boat = pygame.transform.scale(boat, (27, 27))
-                    # screen.blit(boat, (77 + x * 27, 102 + y * 27))
-                    # if not clicked:
-                    #     clicked.append([x, y])
-                    #     ship2 = Ship(x, y)
-                    # else:
-                    #     if [x - 1, y] not in clicked and [x + 1, y] not in clicked \
-                    #             and [x, y - 1] not in clicked and [x, y + 1] not in clicked and [x + 1, y + 1] not in clicked \
-                    #             and [x - 1, y + 1] not in clicked and [x + 1, y - 1] not in clicked \
-                    #             and [x - 1, y - 1] not in clicked and cells1 != 0 and cells2 != 0 and cells3 != 0 and cells4 != 0:
-                    #         ship2 = Ship(x, y)
-                    #     clicked.append([x, y])
-
-                    # self.IMAGE = pygame.Surface((self.width * self.tile_size, self.height * self.tile_size))
-                    # self.IMAGE.blit(self.Image_background, (0, 0))
-                    # self.IMAGE.blit(self.Image_foreground, (0, 0))
+                    boat = Ship(x, y)
 
                     drawing = True
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -493,14 +448,9 @@ def start_game_player2():
     global new_near_cells2, filled_cells2, near_cells2
 
     filled_cells2 = []  # список заполняемых клеток для второго поля  (корабли)
-
-    # промежуточный список для создания конечного new_near_cells
-    near_cells2 = []  # # промежуточный список для создания конечного new_near_cells2
-
+    near_cells2 = []  # промежуточный список для создания конечного new_near_cells2
     # список заполняемых клеток для первого поля (клетки вокруг кораблей, которые нельзя заполнять)
-    new_near_cells2 = []  # # спи
-
-    clicked2 = []
+    new_near_cells2 = []
 
     game = True
 
@@ -516,19 +466,6 @@ def start_game_player2():
             moving_x += 27
         moving_x = 27
         moving_y += 27
-    # wave_1 = load_image("waves2.jpg")
-    # wave_2 = load_image("reversed.jpg")
-    # wave1 = pygame.transform.scale(wave_1, (500, 400))
-    # wave2 = pygame.transform.scale(wave_2, (600, 500))
-    # wave3 = pygame.transform.scale(wave_1, (300, 200))
-    # wave4 = pygame.transform.scale(wave_2, (300, 200))
-    # wave5 = pygame.transform.scale(wave_1, (400, 300))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
-    # waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
-    # waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
-    # waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
-    # waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
-    # waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
 
     drawing = False
 
@@ -570,16 +507,6 @@ def start_game_player2():
                     boat2 = Ship2(x, y)
 
                     drawing = True
-                    # if not clicked2:
-                    #     clicked2.append([x, y])
-                    #     ship2 = Ship2(x, y)
-                    # else:
-                    #     if [x - 1, y] not in clicked2 and [x + 1, y] not in clicked2 \
-                    #             and [x, y - 1] not in clicked2 and [x, y + 1] not in clicked2 and [x + 1, y + 1] not in clicked2 \
-                    #             and [x - 1, y + 1] not in clicked2 and [x + 1, y - 1] not in clicked2 \
-                    #             and [x - 1, y - 1] not in clicked2 and cells1 != 0 and cells2 != 0 and cells3 != 0 and cells4 != 0:
-                    #         ship2 = Ship2(x, y)
-                    #     clicked2.append([x, y])
             elif event.type == pygame.MOUSEBUTTONUP:
                 spisok = []
                 for i in cells_coll:
@@ -640,13 +567,12 @@ def start_game_player2():
                 drawing = False
 
             if cells1 == 0 and cells2 == 0 and cells3 == 0 and cells4 == 0:
-                new_near_cells = []
                 for el in all_sprites:
                     el.kill()
                 print('over')
                 print(ship_map1)
                 print(ship_map2)
-                play_game_1()  # здесь должен быть переход в режим игры
+                play_game_1()  # переход в режим игры
 
         all_sprites.draw(screen)
         all_sprites.update()
@@ -725,27 +651,17 @@ def start_game_player2():
         pygame.display.update()
 
 
-
 def play_game_1():
     player1 = True
 
     global ships_of_player1
 
-
-
     first_time = True
     if first_time:
-
         near_cells_pl1 = []
         new_near_cells_pl1 = []
         first_time = False
-
-    new_near_cells = [1]
-
     global battle
-
-    play = True
-
     game = True
     clock = pygame.time.Clock()
 
@@ -756,18 +672,6 @@ def play_game_1():
     # добавление анимации на поле
     wave = load_image("waves2.jpg")
     wave_inp = pygame.transform.scale(wave, (230, 130))
-    # wave_2 = load_image("reversed.jpg")
-    # wave1 = pygame.transform.scale(wave_1, (500, 400))
-    # wave2 = pygame.transform.scale(wave_2, (600, 500))
-    # wave3 = pygame.transform.scale(wave_1, (300, 200))
-    # wave4 = pygame.transform.scale(wave_2, (300, 200))
-    # wave5 = pygame.transform.scale(wave_1, (400, 300))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 322, 330)
-    # waves2 = AnimatedSprite(wave2, 9, 6, 103, 288)
-    # waves3 = AnimatedSprite(wave3, 9, 6, 103, 120)
-    # waves4 = AnimatedSprite(wave4, 9, 6, 265, 280)
-    # waves5 = AnimatedSprite(wave5, 9, 6, 315, 157)
-    # waves6 = AnimatedSprite(wave5, 9, 6, 150, 182)
 
     drawing = False
 
@@ -810,17 +714,12 @@ def play_game_1():
                     drawing = True
                     fire = load_image("fire.png")
                     fire1 = pygame.transform.scale(fire, (250, 150))
-
-                    # print(cells_coll)
-                    # print(ship_map2[cells_coll[0][0] - 1][cells_coll[0][1] - 1])
-                    # print(ship_map2)
-                    if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells_pl1:
+                    if ship_map2[cells_coll[0][1] - 1][
+                        cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells_pl1:
                         print('прошел')
                         fires = AnimatedSprite(fire1, 5, 4, 27 * x + 68, 27 * y + 90)
                         filled_cells_pl1.append(cells_coll)
                         battle = True
-                        # print(all_ships2)
-
                         # проверка кораблей
                         # однопалубный
                         if [x + 1, y] not in all_ships2 and [x, y + 1] not in all_ships2 \
@@ -828,14 +727,12 @@ def play_game_1():
                             print('убит корабль из 1')
                             ships_of_player1['1'] += 1
 
-                            if ships_of_player1['1'] == 4 and ships_of_player1['2'] == 3 and ships_of_player1['3'] == 2 \
-                                and ships_of_player1['4'] == 1:
+                            if ships_of_player1['1'] == 4 and ships_of_player1['2'] == 3 and \
+                                    ships_of_player1['3'] == 2 and ships_of_player1['4'] == 1:
                                 print('game over')
                                 finish()
 
-
                         # трехпалубный
-
                         elif [x + 1, y] in all_ships2 and [x + 2, y] in all_ships2 \
                                 and [x + 3, y] not in all_ships2 and [x - 1, y] not in all_ships2:
                             if [x + 1, y] in list_of_ship3 and [x + 2, y] in list_of_ship3:
@@ -916,7 +813,6 @@ def play_game_1():
                                 list_of_ship3.append([x, y])
 
                         # двухпалубный
-
                         elif [x + 1, y] in all_ships2 and [x - 1, y] not in all_ships2 and [x + 2, y] not in all_ships2:
                             if [x + 1, y] in list_of_ship2:
                                 print('убит корабль из 2')
@@ -967,7 +863,6 @@ def play_game_1():
                                 list_of_ship2.append([x, y])
 
                         # четырехпалубный
-
                         else:
                             if len(list_of_ship4) == 3:
                                 print('убит корабль из 4')
@@ -982,13 +877,6 @@ def play_game_1():
                                 list_of_ship4.append([x, y])
                         print(ships_of_player1)
 
-                        # !!!!!!!!!!!!!
-                        # здесь происходит запись пораженных кораблей в txt файл
-                        # пока что каждый раз заново создается файл, но нужно будет сделать,
-                        # чтобы только в конце он 1 раз создался
-
-                        # with open('Ships_of_player1.txt', 'w+') as f:
-                        #     pickle.dump(ships_of_player1, f)
                         play_game_1()
                     if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
                         new_near_cells_pl1.append(cells_coll)
@@ -1050,8 +938,6 @@ def play_game_1():
         pygame.display.update()
 
 
-
-
 def play_game_2():
     player1 = True
 
@@ -1067,11 +953,7 @@ def play_game_2():
     near_cells4 = []
     new_near_cells4 = []
 
-    new_near_cells = [1]
-
     global battle
-
-    play = True
 
     game = True
 
@@ -1082,19 +964,6 @@ def play_game_2():
     clock = pygame.time.Clock()
     wave = load_image("waves2.jpg")
     wave_inp = pygame.transform.scale(wave, (230, 130))
-    # wave_1 = load_image("waves2.jpg")
-    # wave_2 = load_image("reversed.jpg")
-    # wave1 = pygame.transform.scale(wave_1, (500, 400))
-    # wave2 = pygame.transform.scale(wave_2, (600, 500))
-    # wave3 = pygame.transform.scale(wave_1, (300, 200))
-    # wave4 = pygame.transform.scale(wave_2, (300, 200))
-    # wave5 = pygame.transform.scale(wave_1, (400, 300))
-    # waves1 = AnimatedSprite(wave1, 9, 6, 605, 220)
-    # waves2 = AnimatedSprite(wave2, 9, 6, 430, 178)
-    # waves3 = AnimatedSprite(wave3, 9, 6, 511, 120)
-    # waves4 = AnimatedSprite(wave4, 9, 6, 670, 145)
-    # waves5 = AnimatedSprite(wave5, 9, 6, 570, 345)
-    # waves6 = AnimatedSprite(wave5, 9, 6, 490, 296)
 
     drawing = False
 
@@ -1153,14 +1022,12 @@ def play_game_2():
                                 and [x - 1, y] not in all_ships1 and [x, y - 1] not in all_ships1:
                             print('убит корабль из 1')
                             ships_of_player2['1'] += 1
-                            if ships_of_player2['1'] == 4 and ships_of_player2['2'] == 3 and ships_of_player2['3'] == 2 \
-                                and ships_of_player2['4'] == 1:
+                            if ships_of_player2['1'] == 4 and ships_of_player2['2'] == 3 and \
+                                    ships_of_player2['3'] == 2 and ships_of_player2['4'] == 1:
                                 print('game over')
                                 finish()
 
-
                         # трехпалубный
-
                         elif [x + 1, y] in all_ships1 and [x + 2, y] in all_ships1 \
                                 and [x + 3, y] not in all_ships1 and [x - 1, y] not in all_ships1:
                             if [x + 1, y] in list2_of_ship3 and [x + 2, y] in list2_of_ship3:
@@ -1241,7 +1108,6 @@ def play_game_2():
                                 list2_of_ship3.append([x, y])
 
                         # двухпалубный
-
                         elif [x + 1, y] in all_ships1 and [x - 1, y] not in all_ships1 and [x + 2, y] not in all_ships1:
                             if [x + 1, y] in list2_of_ship2:
                                 print('убит корабль из 2')
@@ -1292,7 +1158,6 @@ def play_game_2():
                                 list2_of_ship2.append([x, y])
 
                         # четырехпалубный
-
                         else:
                             if len(list2_of_ship4) == 3:
                                 print('убит корабль из 4')
@@ -1307,14 +1172,6 @@ def play_game_2():
                                 list2_of_ship4.append([x, y])
                         print(ships_of_player2)
 
-                        # !!!!!!!!!!!!!
-                        # здесь происходит запись пораженных кораблей в txt файл
-                        # пока что каждый раз заново создается файл, но нужно будет сделать,
-                        # чтобы только в конце он 1 раз создался
-
-                        # with open('Ships_of_player2.txt', 'w+') as f:
-                        #     pickle.dump(ships_of_player2, f)
-
                     elif ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
                         print('не прошел')
                         new_near_cells4.append(cells_coll)
@@ -1322,7 +1179,7 @@ def play_game_2():
                         play_game_1()
 
                 drawing = False
-        # здесь должен быть переход в режим игры
+        # переход в режим игры
 
         all_sprites.draw(screen)
         all_sprites.update()
@@ -1388,7 +1245,6 @@ def finish():
     filled_cells4 = []
     filled_cells_pl1 = []
 
-
     ships_of_player1 = {
         '1': 0,
         '2': 0,
@@ -1403,7 +1259,6 @@ def finish():
         '4': 0
     }
 
-
     running = True
     while True:
 
@@ -1415,18 +1270,16 @@ def finish():
         for object1 in objects:
             object1.process()
 
-        customButton = Button(200, 200, 400, 100, 'play again', start_screen)
+        Button(200, 200, 400, 100, 'play again', start_screen)
         f2 = pygame.font.Font('progresspixel_bold.ttf', 70)
         textt = f2.render('game over', True, (115, 2, 2))
         textt_shadow = f2.render('game over', True, (205, 29, 29))
         screen.blit(textt_shadow, (205, 20))
         screen.blit(textt, (200, 20))
 
-
         pygame.display.flip()
 
         clock.tick(FPS)
-
 
 
 def draw_ship(filled_cells_none, near_cells_none, new_near_cells_none, play=False,
@@ -1563,7 +1416,6 @@ class Board:  # класс для создания полей
 
 screen.fill((0, 0, 0))
 
-
 while True:
 
     for event in pygame.event.get():
@@ -1573,8 +1425,6 @@ while True:
 
     start = 0
     objects = []
-
-
 
     start_screen()
 
