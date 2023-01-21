@@ -82,7 +82,6 @@ class Button():  # класс для кнопок
 
         self.buttonSurface.fill(self.fillColors['normal'])
         if self.buttonRect.collidepoint(mousePos):
-            print(self.alreadyPressed)
             self.buttonSurface.fill(self.fillColors['hover'])
 
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
@@ -90,7 +89,6 @@ class Button():  # класс для кнопок
                 self.alreadyPressed = False
 
                 if not self.alreadyPressed:
-                    print('yay')
                     self.alreadyPressed = True
                     self.onclickFunction()
 
@@ -114,7 +112,6 @@ class Ship(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (27, 27))
         self.rect = self.image.get_rect().move(
             77 + moving_x * 27, 102 + moving_y * 27)
-        all_sprites.remove(waves_dict[(moving_x, moving_y)])
 
 
 class Ship2(pygame.sprite.Sprite):
@@ -124,7 +121,6 @@ class Ship2(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (27, 27))
         self.rect = self.image.get_rect().move(
             403 + moving_x * 27, 102 + moving_y * 27)
-        all_sprites.remove(waves_dict[(moving_x, moving_y)])
 
 
 def start_screen():
@@ -267,7 +263,7 @@ def start_game_player1():
     cells3 = 2
     cells2 = 3
     cells1 = 4
-
+    all_cells = []
     while game:
         if not drawing:
             surf = pygame.Surface((297, 297))
@@ -295,7 +291,12 @@ def start_game_player1():
                     x, y = board.get_click(event.pos)
                     cells_coll.append([x, y])
                     board.fill_cell(x, y, '#0A5257')
-                    boat = Ship(x, y)
+                    all_cells = [el for el in filled_cells]
+                    help_spisok = []
+                    for el in cells_coll:
+                        if el not in help_spisok:
+                            help_spisok.append(el)
+                    all_cells.append(help_spisok)
 
                     drawing = True
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -304,6 +305,12 @@ def start_game_player1():
                     if i not in spisok:
                         spisok.append(i)
                 spisok = sorted(spisok)
+                if all_cells:
+                    elem = all_cells[-1]
+                    if len(elem) == 1 and cells1 != 0 or len(elem) == 2 and cells2 != 0 or len(elem) == 3 and cells3 != 0 or len(elem) == 4 and cells4 != 0:
+                        for i in elem:
+                            all_sprites.remove(waves_dict[(i[0], i[1])])
+                            ship1 = Ship(i[0], i[1])
 
                 # проверка: подходят ли выделенные клетки
                 if len(spisok) == 4 and cells4 > 0:
@@ -319,7 +326,6 @@ def start_game_player1():
                             for i in spisok:
                                 ship_map1[i[1] - 1][i[0] - 1] = 1
                             filled_cells.append(spisok)
-                            print(filled_cells)
                             cells4 -= 1
 
                 if len(spisok) == 3 and cells3 > 0:
@@ -333,7 +339,6 @@ def start_game_player1():
                             for i in spisok:
                                 ship_map1[i[1] - 1][i[0] - 1] = 1
                             filled_cells.append(spisok)
-                            print(filled_cells)
                             cells3 -= 1
 
                 if len(spisok) == 2 and cells2 > 0:
@@ -345,7 +350,6 @@ def start_game_player1():
                             for i in spisok:
                                 ship_map1[i[1] - 1][i[0] - 1] = 1
                             filled_cells.append(spisok)
-                            print(filled_cells)
                             cells2 -= 1
 
                 if len(spisok) == 1 and cells1 > 0:
@@ -353,7 +357,6 @@ def start_game_player1():
                         for i in spisok:
                             ship_map1[i[1] - 1][i[0] - 1] = 1
                         filled_cells.append(spisok)
-                        print(filled_cells)
                         cells1 -= 1
 
                 drawing = False
@@ -475,7 +478,7 @@ def start_game_player2():
     cells3 = 2
     cells2 = 3
     cells1 = 4
-
+    all_cells = []
     while game:
         if not drawing:
             surf = pygame.Surface((297, 297))
@@ -502,9 +505,13 @@ def start_game_player2():
                 if board1.get_click(event.pos) is not None:
                     x, y = board1.get_click(event.pos)
                     cells_coll.append([x, y])
-                    print(x, y)
                     board1.fill_cell(x, y, '#2F0404')
-                    boat2 = Ship2(x, y)
+                    all_cells = [el for el in filled_cells]
+                    help_spisok = []
+                    for el in cells_coll:
+                        if el not in help_spisok:
+                            help_spisok.append(el)
+                    all_cells.append(help_spisok)
 
                     drawing = True
             elif event.type == pygame.MOUSEBUTTONUP:
@@ -513,6 +520,12 @@ def start_game_player2():
                     if i not in spisok:
                         spisok.append(i)
                 spisok = sorted(spisok)
+                if all_cells:
+                    elem = all_cells[-1]
+                    if len(elem) == 1 and cells1 != 0 or len(elem) == 2 and cells2 != 0 or len(elem) == 3 and cells3 != 0 or len(elem) == 4 and cells4 != 0:
+                        for i in elem:
+                            all_sprites.remove(waves_dict[(i[0], i[1])])
+                            ship2 = Ship2(i[0], i[1])
 
                 if len(spisok) == 4 and cells4 > 0:
                     if (spisok[0][0] == spisok[1][0] == spisok[2][0] == spisok[3][0] and spisok[0][1] ==
@@ -527,7 +540,6 @@ def start_game_player2():
                             for i in spisok:
                                 ship_map2[i[1] - 1][i[0] - 1] = 1
                             filled_cells2.append(spisok)
-                            print(filled_cells2)
                             cells4 -= 1
 
                 if len(spisok) == 3 and cells3 > 0:
@@ -541,7 +553,6 @@ def start_game_player2():
                             for i in spisok:
                                 ship_map2[i[1] - 1][i[0] - 1] = 1
                             filled_cells2.append(spisok)
-                            print(filled_cells2)
                             cells3 -= 1
 
                 if len(spisok) == 2 and cells2 > 0:
@@ -553,7 +564,6 @@ def start_game_player2():
                             for i in spisok:
                                 ship_map2[i[1] - 1][i[0] - 1] = 1
                             filled_cells2.append(spisok)
-                            print(filled_cells2)
                             cells2 -= 1
 
                 if len(spisok) == 1 and cells1 > 0:
@@ -561,7 +571,6 @@ def start_game_player2():
                         for i in spisok:
                             ship_map2[i[1] - 1][i[0] - 1] = 1
                         filled_cells2.append(spisok)
-                        print(filled_cells2)
                         cells1 -= 1
 
                 drawing = False
@@ -569,9 +578,6 @@ def start_game_player2():
             if cells1 == 0 and cells2 == 0 and cells3 == 0 and cells4 == 0:
                 for el in all_sprites:
                     el.kill()
-                print('over')
-                print(ship_map1)
-                print(ship_map2)
                 play_game_1()  # переход в режим игры
 
         all_sprites.draw(screen)
@@ -708,7 +714,6 @@ def play_game_1():
                 if board.get_click(event.pos) is not None:
                     x, y = board.get_click(event.pos)
                     cells_coll.append([x, y])
-                    print(x, y)
                     board.fill_cell(x, y, '#0A5257')
 
                     drawing = True
@@ -716,10 +721,10 @@ def play_game_1():
                     fire1 = pygame.transform.scale(fire, (250, 150))
                     if ship_map2[cells_coll[0][1] - 1][
                         cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells_pl1:
-                        print('прошел')
                         fires = AnimatedSprite(fire1, 5, 4, 27 * x + 68, 27 * y + 90)
                         filled_cells_pl1.append(cells_coll)
                         battle = True
+
                         # проверка кораблей
                         # однопалубный
                         if [x + 1, y] not in all_ships2 and [x, y + 1] not in all_ships2 \
@@ -880,7 +885,6 @@ def play_game_1():
                         play_game_1()
                     if ship_map2[cells_coll[0][1] - 1][cells_coll[0][0] - 1] != 1:
                         new_near_cells_pl1.append(cells_coll)
-                        print('не прошел')
                         wave_put = AnimatedSprite(wave_inp, 9, 6, 27 * x + 78, 27 * y + 100)
                         play_game_2()
 
@@ -1000,20 +1004,14 @@ def play_game_2():
                 if board1.get_click(event.pos) is not None:
                     x, y = board1.get_click(event.pos)
                     cells_coll.append([x, y])
-                    print(x, y)
                     board1.fill_cell(x, y, '#0A5257')
 
                     drawing = True
 
                     fire = load_image("fire.png")
                     fire1 = pygame.transform.scale(fire, (250, 150))
-
-                    print(cells_coll)
-                    print(cells_coll[0][0])
-                    print(cells_coll[0][1])
                     if ship_map1[cells_coll[0][1] - 1][cells_coll[0][0] - 1] == 1 and cells_coll not in filled_cells4:
                         fires = AnimatedSprite(fire1, 5, 4, 27 * x + 400, 27 * y + 90)
-                        print('прошел')
                         filled_cells4.append(cells_coll)
 
                         # проверка кораблей
@@ -1232,6 +1230,8 @@ def play_game_2():
 
 def finish():
     screen.fill((0, 0, 0))
+    for el in all_sprites:
+        el.kill()
 
     global ships_of_player1, ships_of_player2, all_ships2, list_of_ship2, list_of_ship3, list_of_ship4, filled_cells4, \
         filled_cells_pl1
@@ -1408,8 +1408,6 @@ class Board:  # класс для создания полей
         if cell:
             self.on_click(cell)
             return cell
-        else:
-            print(None)
 
     pygame.display.update()
 
